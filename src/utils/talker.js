@@ -10,6 +10,12 @@ const json = await fs.readFile(path);
  return data;
 };
 
+const getTalkerById = async (id) => {
+  const json = await readFile();
+  return json.find((talker) => talker.id === id);
+};
+
 module.exports = {
   readFile,
+  getTalkerById,
 };

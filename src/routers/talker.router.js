@@ -1,20 +1,19 @@
 const express = require('express');
-const { readFile } = require('../utils/talker');
+const { readFile, getTalkerById } = require('../utils/talker');
 
 const talkerRouter = express.Router();
 
 talkerRouter.get('/', async (_req, res) => {
-  // try {
-  //   const talkers = await readFile();
-  //   if (!talkers) {
-  //     return res.status(200).json(readFile);
-  //   }
-  //   return res.status(200).send([]);
-  // } catch (error) {
-  //   res.status(500).send('Algo deu errado!');
-  // }
  const talkers = await readFile();
    res.status(200).send(talkers);
+});
+
+talkerRouter.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const talker = await getTalkerById(Number(id));
+  if (!talker) return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  res.status(200).send(talker);
 });
 
 module.exports = talkerRouter;
