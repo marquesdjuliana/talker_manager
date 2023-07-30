@@ -7,11 +7,11 @@ const validateEmailFormat = (req, res, next) => {
   const emailValue = email !== undefined ? email : null;
 
   if (!emailValue || emailValue === null) {
-    return res.status(400).json({ message: requiredErrorMessage });
+    return res.status(400).send({ message: requiredErrorMessage });
   }
 
   if (!emailRegex.test(emailValue)) {
-    return res.status(400).json({ message: formatErrorMessage });
+    return res.status(400).send({ message: formatErrorMessage });
   }
 
   next();
@@ -26,7 +26,7 @@ const validatePasswordFormat = (req, res, next) => {
   const passwordValue = password !== undefined ? password : null;
 
   if (!passwordValue || passwordValue.length < minLength) {
-  return res.status(400).json({ message: !passwordValue 
+  return res.status(400).send({ message: !passwordValue 
     ? requiredErrorMessage : lengthErrorMessage });
   }
 

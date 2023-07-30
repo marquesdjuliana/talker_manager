@@ -43,7 +43,7 @@ const validateTalk = (req, res, next) => {
   const { talk } = req.body;
 
   if (!talk) {
-    return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
+    return res.status(400).send({ message: 'O campo "talk" é obrigatório' });
   }
   next();
 };
@@ -73,7 +73,7 @@ const validateWatched = (req, res, next) => {
       return res.status(400).send({ message: 
         'O campo "rate" deve ser um número inteiro entre 1 e 5' });
     }
-    
+
     next();
   };
 
