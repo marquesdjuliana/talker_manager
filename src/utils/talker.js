@@ -32,8 +32,24 @@ const addTalker = async (talker) => {
   return newTalker;
 };
 
+const updateTalker = async (id, { name, age, talk: { watchedAt, rate } }) => {
+  const json = await readFile();
+  const updateTalkerId = json.find((talker) => talker.id === id);
+  if (!updateTalkerId) {
+    return null;
+  }
+
+  updateTalkerId.name = name;
+  updateTalkerId.age = age;
+  updateTalkerId.talk.rate = rate;
+  updateTalkerId.talk.watchedAt = watchedAt;
+
+  await fs.writeFile(path, JSON.stringify(json));
+  return updateTalkerId;
+};
 module.exports = {
   readFile,
   getTalkerById,
   addTalker,
+  updateTalker,
 };

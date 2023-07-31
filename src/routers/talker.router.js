@@ -1,6 +1,6 @@
 const express = require('express');
 const validateTalker = require('../middleware/validateTalker');
-const { readFile, getTalkerById, addTalker } = require('../utils/talker');
+const { readFile, getTalkerById, addTalker, updateTalker } = require('../utils/talker');
 
 const talkerRouter = express.Router();
 
@@ -22,6 +22,17 @@ talkerRouter.post('/', validateTalker, async (req, res) => {
 
   if (!newTalker) return res.status(400).send();
   res.status(201).send(newTalker);
+});
+
+talkerRouter.put('/:id', validateTalker, async (req, res) => {
+  const id = Number(req.params.id);
+
+  const updatedTalker = await updateTalker(id, req.body);
+
+  if (!updatedTalker) {
+    return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  }
+  res.status(200).send(updatedTalker);
 });
 
 module.exports = talkerRouter;
