@@ -11,6 +11,19 @@ talkerRouter.get('/', async (_req, res) => {
    res.status(200).send(talkers);
 });
 
+talkerRouter.get('/search', authorized, async (req, res) => {
+  const { q } = req.query;
+  const allTalkers = await readFile();
+
+  if (!q || q === '') {
+    return res.status(200).json(allTalkers);
+  }
+
+  const filteredTalkers = allTalkers.filter((talker) => talker.name.includes(q));
+
+  return res.status(200).json(filteredTalkers);
+});
+
 talkerRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
 
