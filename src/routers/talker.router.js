@@ -1,6 +1,8 @@
 const express = require('express');
+const authorized = require('../middleware/authorization');
 const validateTalker = require('../middleware/validateTalker');
-const { readFile, getTalkerById, addTalker, updateTalker } = require('../utils/talker');
+const { readFile, getTalkerById, 
+  addTalker, updateTalker, deleteTalker } = require('../utils/talker');
 
 const talkerRouter = express.Router();
 
@@ -17,14 +19,14 @@ talkerRouter.get('/:id', async (req, res) => {
   res.status(200).send(talker);
 });
 
-talkerRouter.post('/', validateTalker, async (req, res) => {
+talkerRouter.post('/', authorized, validateTalker, async (req, res) => {
   const newTalker = await addTalker({ ...req.body });
 
   if (!newTalker) return res.status(400).send();
   res.status(201).send(newTalker);
 });
 
-talkerRouter.put('/:id', validateTalker, async (req, res) => {
+talkerRouter.put('/:id', validateTalker, authorized, async (req, res) => {
   const id = Number(req.params.id);
 
   const updatedTalker = await updateTalker(id, req.body);
@@ -33,6 +35,17 @@ talkerRouter.put('/:id', validateTalker, async (req, res) => {
     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
   }
   res.status(200).send(updatedTalker);
+});
+
+talkerRouter.delete('/:id', authorized, async (req, res) => {
+  const { id } = req.params;
+
+  const talkerToDelete = await deleteTalker(Number(id));
+  if (!talkerToDelete) {
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  }
+
+  res.status(204).end();
 });
 
 module.exports = talkerRouter;

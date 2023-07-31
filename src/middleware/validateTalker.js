@@ -1,14 +1,14 @@
-const validateToken = (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization) {
-    return res.status(401).send({ message: 'Token não encontrado' });
-  }
-  if (typeof authorization !== 'string' || authorization.length !== 16) {
-    return res.status(401).send({ message: 'Token inválido' });
-  }
+// const validateToken = (req, res, next) => {
+//   const { authorization } = req.headers;
+//   if (!authorization) {
+//     return res.status(401).send({ message: 'Token não encontrado' });
+//   }
+//   if (typeof authorization !== 'string' || authorization.length !== 16) {
+//     return res.status(401).send({ message: 'Token inválido' });
+//   }
 
-  next();
-};
+//   next();
+// };
 
 const validateName = (req, res, next) => {
   const { name } = req.body;
@@ -78,7 +78,7 @@ const validateWatched = (req, res, next) => {
   };
 
 const validateTalker = [
-  validateToken,
+  // validateToken,
   validateName,
   validateAge,
   validateTalk,

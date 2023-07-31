@@ -47,9 +47,22 @@ const updateTalker = async (id, { name, age, talk: { watchedAt, rate } }) => {
   await fs.writeFile(path, JSON.stringify(json));
   return updateTalkerId;
 };
+
+const deleteTalker = async (id) => {
+  const json = await readFile();
+  const index = json.findIndex((talker) => talker.id === id);
+  if (index !== -1) {
+    const deletedTalker = json.splice(index, 1)[0]; 
+    await fs.writeFile(path, JSON.stringify(json));
+    return deletedTalker;
+  }
+  return null; 
+};
+
 module.exports = {
   readFile,
   getTalkerById,
   addTalker,
   updateTalker,
+  deleteTalker,
 };
